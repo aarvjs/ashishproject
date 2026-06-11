@@ -8,10 +8,25 @@ import { Footer } from "@/components/Footer";
 import { expertiseContent } from "@/lib/content";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
+import { PageHero } from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "Our Services | Software & Digital Solutions - Sabka Saathi",
-  description: "Explore our full range of digital services, from Web & Mobile development to Cloud solutions and SEO. Built for growth.",
+  title: "Our Services | Web & App Development - Sabka Saathi",
+  description: "Explore our software engineering capabilities: custom web development, mobile apps, SaaS, cloud services, and custom CRM systems designed for growth.",
+  alternates: {
+    canonical: "https://sabkasathi.com/services",
+  },
+  openGraph: {
+    title: "Our Services | Web & App Development - Sabka Saathi",
+    description: "Explore our software engineering capabilities: custom web development, mobile apps, SaaS, cloud services, and custom CRM systems designed for growth.",
+    url: "https://sabkasathi.com/services",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Our Services | Web & App Development - Sabka Saathi",
+    description: "Explore our software engineering capabilities: custom web development, mobile apps, SaaS, cloud services, and custom CRM systems designed for growth.",
+  },
 };
 
 export default function ServicesPage() {
@@ -20,19 +35,17 @@ export default function ServicesPage() {
     <div className="flex min-h-screen flex-col">
       <InteractiveBackground />
       <Navbar />
-      <main className="flex-1 pt-32">
+      <main className="flex-1 pt-0">
         {/* Header Section */}
-        <section className="py-16 text-center container mx-auto px-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-600 text-[10px] font-black uppercase tracking-widest mb-4">
-            Capabilities
-          </div>
-          <h1 className="text-5xl md:text-7xl font-black text-slate-900 mb-6 tracking-tight">
-            Our <span className="text-orange-500 italic">Expertise</span>
-          </h1>
-          <p className="text-xl text-slate-600 font-medium max-w-2xl mx-auto">
-            High-performance digital products built with modern stacks to drive real-world business outcomes.
-          </p>
-        </section>
+        <PageHero
+          badge="What We Build"
+          title="Our Expertise &"
+          titleHighlight="Capabilities"
+          subtitle="High-performance digital products built with modern stacks to drive real-world business outcomes."
+          type="services"
+          ctaText="Start a Project"
+          ctaHref="/contact"
+        />
 
         <section className="py-16 container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

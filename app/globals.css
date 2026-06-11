@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --background: #fffdf5;
   --foreground: #2d1b00;
@@ -24,6 +28,11 @@
   display: none; /* Chrome, Safari, and Opera */
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 body {
   background:
     radial-gradient(circle at 15% 20%, rgba(255, 210, 0, 0.25), transparent 34%),
@@ -41,7 +50,7 @@ body {
 }
 
 section {
-  @apply py-20;
+  @apply py-12 md:py-24;
 }
 
 @keyframes graffitiFloat {
@@ -77,6 +86,7 @@ section {
   background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.7), rgba(255, 210, 0, 0.15) 42%, rgba(255, 149, 0, 0.05) 70%, transparent 100%);
   filter: blur(14px);
   animation: graffitiFloat 7s ease-in-out infinite;
+  will-change: transform;
 }
 
 .graffiti-stroke {
@@ -84,4 +94,116 @@ section {
   opacity: 0.45;
   filter: drop-shadow(0 6px 12px rgba(255, 149, 0, 0.2));
   animation: strokeDrift 8.5s ease-in-out infinite;
+  will-change: transform;
 }
+
+@keyframes marqueeLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marqueeRight {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-marquee-left {
+  display: flex;
+  width: max-content;
+  animation: marqueeLeft 35s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-right {
+  display: flex;
+  width: max-content;
+  animation: marqueeRight 35s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-left:hover,
+.animate-marquee-right:hover {
+  animation-play-state: paused;
+}
+
+/* Custom button hover transitions on hover-capable devices (Desktops/Laptops) */
+@media (hover: hover) {
+  .btn-base-layer {
+    transition: opacity 0.3s ease;
+  }
+  .btn-group:hover .btn-base-layer {
+    opacity: 0 !important;
+  }
+  .btn-hover-layer {
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-group:hover .btn-hover-layer {
+    transform: translateY(0) !important;
+  }
+  .btn-text-layer-outline {
+    transition: color 0.3s ease;
+  }
+  .btn-group:hover .btn-text-layer-outline {
+    color: white !important;
+  }
+}
+
+/* Custom liquid/water rising wave hover animation */
+.liquid-card {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.liquid-card::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.liquid-card:hover::before {
+  transform: scaleY(1);
+}
+
+.liquid-card-orange::before {
+  background: linear-gradient(to top, rgba(249, 115, 22, 0.08) 0%, rgba(249, 115, 22, 0.01) 100%);
+}
+
+.liquid-card-rose::before {
+  background: linear-gradient(to top, rgba(244, 63, 94, 0.08) 0%, rgba(244, 63, 94, 0.01) 100%);
+}
+
+.liquid-card-amber::before {
+  background: linear-gradient(to top, rgba(245, 158, 11, 0.08) 0%, rgba(245, 158, 11, 0.01) 100%);
+}
+
+.liquid-card-blue::before {
+  background: linear-gradient(to top, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.01) 100%);
+}
+
+/* Preloader hide logic to prevent flash on first load */
+.preloaded-hide .preloader-container {
+  display: none !important;
+}
+
+
+
+

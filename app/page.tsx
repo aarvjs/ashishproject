@@ -1,6 +1,38 @@
-"use client";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sabka Saathi - High-Performance Software Development & CRM Automation",
+  description: "Accelerate your business with Sabka Saathi. We build custom Next.js web applications, mobile apps, and CRM systems for startups and local businesses across India.",
+  keywords: [
+    "software development company",
+    "next.js development",
+    "custom software bihar",
+    "software agency pune",
+    "web development gujarat",
+    "CRM automation india",
+    "mobile app development",
+    "startup website builders",
+    "GST registered software agency"
+  ],
+  openGraph: {
+    title: "Sabka Saathi - High-Performance Software Development & CRM Automation",
+    description: "Accelerate your business with Sabka Saathi. We build custom Next.js web applications, mobile apps, and CRM systems for startups and local businesses across India.",
+    url: "https://sabkasathi.com",
+    siteName: "Sabka Saathi",
+    images: [{ url: "/logo.png", width: 800, height: 600, alt: "Sabka Saathi Digital Services Logo" }],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sabka Saathi - High-Performance Software Development & CRM Automation",
+    description: "Accelerate your business with Sabka Saathi. Custom Next.js web applications, mobile apps, and CRM systems.",
+    images: ["/logo.png"],
+  },
+};
 
 import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 import { ContactSection } from "@/components/ContactSection";
 import { Hero } from "@/components/Hero";
 import { InteractiveBackground } from "@/components/InteractiveBackground";
@@ -12,6 +44,7 @@ import { FAQSection } from "@/components/FAQSection";
 import { Footer } from "@/components/Footer";
 import { PortfolioShowcase } from "@/components/PortfolioShowcase";
 import Link from "next/link";
+import { ShoppingBag, Heart, GraduationCap, Briefcase } from "lucide-react";
 
 export default function Home() {
   return (
@@ -54,26 +87,77 @@ export default function Home() {
 
         <PortfolioShowcase />
 
-        <div className="py-24 bg-white/30 border-y border-slate-100">
+        <div className="py-12 bg-white/30 border-y border-slate-100">
           <div className="container mx-auto px-4">
-             <div className="flex flex-col items-center mb-12">
-                <h2 className="text-4xl font-black text-slate-900 text-center mb-6">Our <span className="text-orange-500">Process</span></h2>
-                <p className="text-slate-600 font-medium text-center max-w-2xl mb-8">Detailed discovery, agile development, and continuous delivery to ensure your project&apos;s success.</p>
+             <div className="flex flex-col items-center mb-10">
+                <h2 className="text-4xl font-black text-slate-900 text-center mb-4">Our <span className="text-orange-500">Process</span></h2>
+                <p className="text-slate-600 font-medium text-center max-w-2xl mb-6">Detailed discovery, agile development, and continuous delivery to ensure your project&apos;s success.</p>
                 <Link href="/services">
-                  <Button className="rounded-full px-10 border-orange-500 text-orange-600" variant="outline">Explore Services →</Button>
+                  <Button className="rounded-full px-10 border-orange-500 text-orange-600 animate-pulse hover:animate-none" variant="outline">Explore Services →</Button>
                 </Link>
              </div>
-             <ProcessSection />
+             <ProcessSection hideHeader />
           </div>
         </div>
 
-        <div className="py-24">
-           <div className="container mx-auto px-4">
-              <div className="flex flex-col items-center mb-12">
-                <h2 className="text-4xl font-black text-slate-900 text-center mb-4">Industries We <span className="text-orange-500 italic">Empower</span></h2>
-                <p className="text-slate-600 font-medium text-center max-w-2xl mb-8">From Healthcare to E-commerce, we serve 50+ business sectors with tailored tech.</p>
+        <div className="pt-10 pb-16 md:pt-14 md:pb-20 bg-gradient-to-b from-slate-50/20 to-white">
+           <div className="container mx-auto px-4 max-w-5xl">
+              <div className="flex flex-col items-center mb-12 text-center">
+                <p className="mb-3 text-xs font-black uppercase tracking-[0.3em] text-orange-500">Market Reach</p>
+                <h2 className="text-3xl md:text-4.5xl font-black text-slate-900 mb-4">Industries We <span className="text-orange-500 italic font-black">Empower</span></h2>
+                <p className="text-slate-500 font-medium text-xs md:text-sm max-w-xl leading-relaxed">From Healthcare to E-commerce, we serve 50+ business sectors with custom-tailored technology.</p>
+              </div>
+
+              {/* 4 Industries Preview Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto mb-12">
+                {[
+                  {
+                    title: "Startups & Retail",
+                    desc: "Digital setup, branding, and e-commerce growth strategies for new business ideas.",
+                    icon: ShoppingBag,
+                    colorClass: "border-l-4 border-l-orange-500/80 hover:border-orange-500 liquid-card-orange",
+                    iconColor: "text-orange-600 bg-orange-500/10",
+                  },
+                  {
+                    title: "Medical & Healthcare",
+                    desc: "Patient reach, appointment scheduling, and custom practice management systems.",
+                    icon: Heart,
+                    colorClass: "border-l-4 border-l-rose-500/80 hover:border-rose-500 liquid-card-rose",
+                    iconColor: "text-rose-600 bg-rose-500/10",
+                  },
+                  {
+                    title: "Education & Learning",
+                    desc: "LMS, student portals, and operational management tools for schools and academies.",
+                    icon: GraduationCap,
+                    colorClass: "border-l-4 border-l-amber-500/80 hover:border-amber-500 liquid-card-amber",
+                    iconColor: "text-amber-600 bg-amber-500/10",
+                  },
+                  {
+                    title: "Professional Services",
+                    desc: "Corporate landing pages, lead generation pipelines, and dashboard software.",
+                    icon: Briefcase,
+                    colorClass: "border-l-4 border-l-blue-500/80 hover:border-blue-500 liquid-card-blue",
+                    iconColor: "text-blue-600 bg-blue-500/10",
+                  }
+                ].map((ind, idx) => {
+                  const Icon = ind.icon;
+                  return (
+                    <Card key={idx} className={`p-6 h-full bg-white/60 border border-slate-100/50 backdrop-blur-md hover:shadow-lg hover:shadow-orange-500/5 transition-all duration-300 rounded-3xl group flex flex-col items-center text-center liquid-card ${ind.colorClass}`}>
+                      <div className={`w-11 h-11 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 ${ind.iconColor}`}>
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <h3 className="text-base font-black text-slate-900 mb-2 transition-colors">{ind.title}</h3>
+                      <p className="text-[11px] text-slate-500 font-medium leading-relaxed">{ind.desc}</p>
+                    </Card>
+                  );
+                })}
+              </div>
+
+              <div className="flex justify-center">
                 <Link href="/industries">
-                  <Button className="rounded-2xl px-12 py-7 text-lg shadow-xl shadow-orange-500/20">View All 50+ Industries →</Button>
+                  <Button variant="primary" size="lg" className="rounded-full shadow-xl shadow-orange-500/15">
+                    View All 50+ Industries →
+                  </Button>
                 </Link>
               </div>
            </div>

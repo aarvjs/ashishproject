@@ -4,6 +4,28 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { cn } from "@/lib/cn";
+import { 
+  ShoppingBag, 
+  Heart, 
+  GraduationCap, 
+  Briefcase, 
+  Home as HomeIcon, 
+  Factory, 
+  Camera, 
+  Utensils, 
+  Globe 
+} from "lucide-react";
+
+const categoryIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  "Business & Retail": ShoppingBag,
+  "Medical & Wellness": Heart,
+  "Education": GraduationCap,
+  "Professional": Briefcase,
+  "Home & Local": HomeIcon,
+  "Industrial": Factory,
+  "Creative & Media": Camera,
+  "Food & Hospitality": Utensils
+};
 
 const categories = [
   "All",
@@ -131,35 +153,38 @@ export function IndustriesSection() {
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
           >
             <AnimatePresence mode="popLayout">
-              {filteredIndustries.map((item) => (
-                <motion.div
-                  key={item.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Card className="p-6 h-full bg-white border border-slate-100/80 hover:border-orange-200 transition-all hover:shadow-xl hover:shadow-orange-500/5 group rounded-3xl">
-                    <div className="flex items-start gap-4">
-                      <div className="text-3xl bg-slate-50 group-hover:bg-orange-50 w-14 h-14 rounded-2xl flex items-center justify-center transition-colors">
-                        {item.icon}
+              {filteredIndustries.map((item) => {
+                const IconComponent = categoryIconMap[item.category] || Globe;
+                return (
+                  <motion.div
+                    key={item.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Card className="p-5 h-full bg-white border border-slate-100/80 hover:border-orange-200 transition-all hover:shadow-lg hover:shadow-orange-500/5 group rounded-3xl">
+                      <div className="flex items-start gap-4">
+                        <div className="text-orange-600 bg-orange-50/70 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 flex-shrink-0">
+                          <IconComponent className="w-5 h-5" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-bold text-slate-900 mb-1 group-hover:text-orange-600 transition-colors text-sm md:text-base">
+                            {item.title}
+                          </h4>
+                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wide mb-2">
+                            {item.category}
+                          </p>
+                          <p className="text-xs md:text-sm text-slate-500 leading-relaxed font-medium">
+                            {item.desc}
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <h4 className="font-bold text-slate-900 mb-1 group-hover:text-orange-600 transition-colors">
-                          {item.title}
-                        </h4>
-                        <p className="text-[11px] font-medium text-slate-400 uppercase tracking-wide mb-2 italic">
-                          {item.category}
-                        </p>
-                        <p className="text-sm text-slate-500 leading-relaxed font-medium">
-                          {item.desc}
-                        </p>
-                      </div>
-                    </div>
-                  </Card>
-                </motion.div>
-              ))}
+                    </Card>
+                  </motion.div>
+                );
+              })}
             </AnimatePresence>
           </motion.div>
         </div>

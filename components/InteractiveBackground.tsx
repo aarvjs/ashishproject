@@ -67,6 +67,12 @@ export function InteractiveBackground() {
   const smoothY = useSpring(mouseY, { damping: 28, stiffness: 160 });
 
   useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 768px)").matches || 
+                     ('ontouchstart' in window) || 
+                     (navigator.maxTouchPoints > 0);
+                     
+    if (isMobile) return;
+
     const onMove = (event: MouseEvent) => {
       mouseX.set(event.clientX);
       mouseY.set(event.clientY);

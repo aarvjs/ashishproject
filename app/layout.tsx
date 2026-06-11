@@ -56,6 +56,7 @@ const jsonLd = {
 };
 
 import { FloatingContact } from "@/components/FloatingContact";
+import { Preloader } from "@/components/Preloader";
 
 export default function RootLayout({
   children,
@@ -64,7 +65,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${poppins.variable} h-full antialiased`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if (sessionStorage.getItem('hasPreloaded')) {
+                  document.documentElement.classList.add('preloaded-hide');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">
+        <Preloader />
         <Script
           id="schema-org"
           type="application/ld+json"

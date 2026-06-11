@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
+import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const links = [
   { label: "Home", href: "/" },
@@ -57,7 +59,7 @@ export function Navbar() {
         <Link href="/" className="flex items-center gap-3">
           <Image
             src="/logo.png"
-            alt="Logo"
+            alt="Sabka Saathi - Professional Software Development Logo"
             width={40}
             height={40}
             className="h-10 w-auto object-contain scale-110"
@@ -83,33 +85,74 @@ export function Navbar() {
         <button
           type="button"
           aria-label="Toggle menu"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/60 bg-white/70 md:hidden"
-          onClick={() => setOpen((prev) => !prev)}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/60 bg-white/70 text-slate-800 md:hidden hover:bg-white transition-colors"
+          onClick={() => setOpen(true)}
         >
-          <span className="text-lg">{open ? "X" : "|||"}</span>
+          <Menu className="w-5 h-5" />
         </button>
       </nav>
 
-      <div
-        className={cn(
-          "mx-auto mt-3 w-full max-w-7xl overflow-hidden rounded-2xl border border-white/60 bg-white/75 shadow-lg backdrop-blur-xl md:hidden",
-          open ? "max-h-96 p-4" : "max-h-0 p-0 border-transparent"
-        )}
-      >
-        <div className="flex flex-col gap-3">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="rounded-xl px-4 py-2 text-sm font-medium text-slate-700 hover:bg-orange-50 hover:text-orange-600 transition-all"
+      <AnimatePresence>
+        {open && (
+          <>
+            {/* Backdrop Overlay with blur */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               onClick={() => setOpen(false)}
+              className="fixed inset-0 z-40 bg-slate-950/40 backdrop-blur-sm md:hidden"
+            />
+
+            {/* Sliding Drawer Menu */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
+              className="fixed top-0 right-0 bottom-0 z-50 w-72 max-w-[80vw] bg-white/85 border-l border-white/20 shadow-2xl backdrop-blur-2xl p-6 flex flex-col justify-between md:hidden"
             >
-              {link.label}
-            </Link>
-          ))}
-          <Button onClick={handleInstall} className="mt-2 w-full">Download App</Button>
-        </div>
-      </div>
+              <div className="flex flex-col h-full justify-between">
+                <div>
+                  {/* Top Bar inside Menu */}
+                  <div className="flex items-center justify-between pb-5 border-b border-slate-100/80">
+                    <span className="text-sm font-black text-slate-900 tracking-wider uppercase">Menu</span>
+                    <button
+                      type="button"
+                      aria-label="Close menu"
+                      onClick={() => setOpen(false)}
+                      className="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 transition-colors"
+                    >
+                      <X className="w-4.5 h-4.5" />
+                    </button>
+                  </div>
+
+                  {/* Navigation Links list */}
+                  <div className="flex flex-col gap-3.5 py-6 overflow-y-auto max-h-[calc(100vh-200px)]">
+                    {links.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-800 hover:bg-orange-50 hover:text-orange-600 transition-all"
+                        onClick={() => setOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bottom App Download Button */}
+                <div className="pt-5 border-t border-slate-100/80">
+                  <Button onClick={handleInstall} className="w-full py-3.5 rounded-xl font-bold">
+                    Download App
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
