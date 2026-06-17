@@ -238,6 +238,100 @@ section {
   transform: scaleY(1);
 }
 
+/* Service card liquid hover background fill */
+.service-card-liquid {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+.service-card-liquid::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(135deg, #ff9500 0%, #ff7b00 100%);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.service-card-liquid:hover::before {
+  transform: scaleY(1);
+}
+
+/* Project card water-fill hover background fill */
+.project-card-waterfill {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.project-card-waterfill::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(135deg, #ff9500 0%, #ff7b00 100%);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.project-card-waterfill:hover::before {
+  transform: scaleY(1);
+}
+
+/* Mirror Marquee Animations using CSS Variables for dynamic bounds */
+@keyframes marqueeMirrorLeft {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(var(--max-scroll), 0, 0);
+  }
+}
+
+@keyframes marqueeMirrorRight {
+  0% {
+    transform: translate3d(var(--max-scroll), 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-mirror-left {
+  display: flex;
+  width: max-content;
+  animation: marqueeMirrorLeft 25s linear infinite alternate;
+  will-change: transform;
+}
+
+.animate-mirror-right {
+  display: flex;
+  width: max-content;
+  animation: marqueeMirrorRight 25s linear infinite alternate;
+  will-change: transform;
+}
+
+.animate-mirror-left:hover,
+.animate-mirror-right:hover {
+  animation-play-state: paused;
+}
+
 
 
 

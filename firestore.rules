@@ -1,22 +1,36 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /blogs/{blogId} {
-      // Helper function to check if the user is an allowed admin
-      function isAdmin() {
-        return request.auth != null && 
-               request.auth.token.email.toLowerCase() in [
-                 'arvindyadav70075@gmail.com',
-                 'admin@email.com', 
-                 'client@email.com', 
-                 'admin@sabkasaathi.in'
-               ];
-      }
+    // Helper function to check if the user is an allowed admin
+    function isAdmin() {
+      return request.auth != null && 
+             request.auth.token.email.toLowerCase() in [
+               'arvindyadav70075@gmail.com',
+               'ashushk1249@gmail.com'
+             ];
+    }
 
+    match /blogs/{blogId} {
       // Public can read only published blogs; Admins can read all blogs
       allow read: if isAdmin() || (resource == null || resource.data.status == 'published');
       
       // Admins can write all blogs
+      allow write: if isAdmin();
+    }
+
+    match /developers/{devId} {
+      // Public can read only active developers; Admins can read all developers
+      allow read: if isAdmin() || (resource == null || resource.data.status == 'active');
+      
+      // Admins can write all developers
+      allow write: if isAdmin();
+    }
+
+    match /projects/{projectId} {
+      // Public can read only active projects; Admins can read all projects
+      allow read: if isAdmin() || (resource == null || resource.data.status == 'active');
+      
+      // Admins can write all projects
       allow write: if isAdmin();
     }
   }

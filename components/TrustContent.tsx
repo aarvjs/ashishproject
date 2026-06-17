@@ -1,13 +1,100 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import Image from "next/image";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { Globe, Loader2 } from "lucide-react";
 
+const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={props.className}
+  >
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect width="4" height="12" x="2" y="9" />
+    <circle cx="4" cy="4" r="2" />
+  </svg>
+);
+
+const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={props.className}
+  >
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+    <path d="M9 18c-4.51 2-5-2-7-2" />
+  </svg>
+);
+
+interface Developer {
+  id: string;
+  name: string;
+  role: string;
+  description: string;
+  imageUrl: string;
+  skills: string[];
+  linkedinUrl?: string;
+  githubUrl?: string;
+  portfolioUrl?: string;
+  order: number;
+}
 
 export function TrustContent() {
+  const [developers, setDevelopers] = useState<Developer[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchActiveDevelopers = async () => {
+      try {
+        const q = query(
+          collection(db, "developers"),
+          where("status", "==", "active")
+        );
+        const snapshot = await getDocs(q);
+        const activeDevs: Developer[] = [];
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          activeDevs.push({
+            id: docSnap.id,
+            name: data.name || "",
+            role: data.role || "",
+            description: data.description || "",
+            imageUrl: data.imageUrl || "",
+            skills: data.skills || [],
+            linkedinUrl: data.linkedinUrl || "",
+            githubUrl: data.githubUrl || "",
+            portfolioUrl: data.portfolioUrl || "",
+            order: typeof data.order === "number" ? data.order : 0,
+          });
+        });
+        // Sort in memory by order ascending to prevent index errors
+        activeDevs.sort((a, b) => a.order - b.order);
+        setDevelopers(activeDevs);
+      } catch (err) {
+        console.error("Error fetching active developers:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchActiveDevelopers();
+  }, []);
+
   return (
     <>
       {/* Header Section */}
@@ -204,6 +291,142 @@ export function TrustContent() {
             </ul>
           </Card>
         </motion.div>
+      </div>
+
+      {/* Meet Our Developers Section */}
+      <div className="mb-8 sm:mb-10">
+        <div className="flex flex-col items-center mb-5 sm:mb-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-100 text-orange-700 font-bold text-xs uppercase tracking-widest mb-4 shadow-sm"
+          >
+            Our Technical Workforce
+          </motion.div>
+          <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight mb-3 uppercase">
+            Meet Our Developers
+          </h2>
+          <p className="text-slate-550 font-semibold max-w-2xl text-xs sm:text-sm leading-relaxed text-slate-500">
+            The people behind our digital products, websites, apps, and business solutions.
+          </p>
+        </div>
+
+        {loading ? (
+          <div className="flex items-center justify-center py-16">
+            <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+          </div>
+        ) : developers.length === 0 ? (
+          <div className="text-center py-16 bg-white border border-slate-100 rounded-[2.5rem] shadow-sm">
+            <p className="text-sm font-bold text-slate-500">
+              Our team profiles will be updated soon.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+            {developers.map((dev, index) => (
+              <motion.div
+                key={dev.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+                className="h-full"
+              >
+                <div className="group relative overflow-hidden bg-white border border-slate-200/60 rounded-[1.5rem] shadow-sm shadow-slate-100/40 hover:shadow-xl hover:shadow-orange-500/5 transition-all duration-300 hover:-translate-y-1.5 flex flex-col h-full">
+                  {/* Smooth bottom-to-top gradient wave hover overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-orange-500/[0.06] via-orange-500/[0.01] to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none z-0" />
+                  
+                  {/* Image at the top (full-width, cropped, rounded-t-3xl) */}
+                  <div className="relative w-full h-[170px] sm:h-[190px] md:h-[230px] overflow-hidden rounded-t-[1.4rem] shrink-0 bg-slate-50 border-b border-slate-100/50 z-10">
+                    {dev.imageUrl ? (
+                      <Image
+                        src={dev.imageUrl}
+                        alt={dev.name}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 50vw, 25vw"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center text-slate-350 font-bold text-xs uppercase tracking-wider">No Image</div>
+                    )}
+                  </div>
+
+                  {/* Content block with tight margins and compact internal padding */}
+                  <div className="p-3.5 sm:p-4 flex flex-col flex-1 min-w-0 justify-between relative z-10">
+                    <div className="mb-3">
+                      {/* Name & Role */}
+                      <h3 className="text-sm sm:text-base font-black text-slate-900 mb-0.5 group-hover:text-orange-600 transition-colors duration-300 truncate">
+                        {dev.name}
+                      </h3>
+                      <p className="text-[9px] sm:text-[10px] font-bold text-orange-500 uppercase tracking-widest leading-none mb-2 truncate">
+                        {dev.role}
+                      </p>
+                      
+                      {/* Description - clamped strictly to 3 lines */}
+                      <p className="text-xs text-slate-500 font-medium leading-relaxed line-clamp-3 group-hover:text-slate-700 transition-colors duration-300">
+                        {dev.description}
+                      </p>
+                    </div>
+
+                    <div>
+                      {/* Skills/Tags */}
+                      {dev.skills && dev.skills.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {dev.skills.slice(0, 3).map((skill, i) => (
+                            <span
+                              key={i}
+                              className="px-1.5 py-0.5 bg-slate-50 border border-slate-200/50 text-[9px] font-bold text-slate-500 rounded group-hover:bg-orange-50/50 group-hover:text-orange-700 group-hover:border-orange-100/40 transition-colors duration-300"
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Social Links */}
+                      {(dev.linkedinUrl || dev.githubUrl || dev.portfolioUrl) && (
+                        <div className="flex gap-2 pt-2.5 border-t border-slate-100 group-hover:border-orange-100/40 transition-colors duration-300">
+                          {dev.linkedinUrl && (
+                            <a
+                              href={dev.linkedinUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-7.5 h-7.5 rounded-lg bg-slate-50 hover:bg-orange-500 hover:text-white border border-slate-200/60 text-slate-400 flex items-center justify-center transition-all duration-300"
+                            >
+                              <LinkedinIcon className="w-3.5 h-3.5" />
+                            </a>
+                          )}
+                          {dev.githubUrl && (
+                            <a
+                              href={dev.githubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-7.5 h-7.5 rounded-lg bg-slate-50 hover:bg-orange-500 hover:text-white border border-slate-200/60 text-slate-400 flex items-center justify-center transition-all duration-300"
+                            >
+                              <GithubIcon className="w-3.5 h-3.5" />
+                            </a>
+                          )}
+                          {dev.portfolioUrl && (
+                            <a
+                              href={dev.portfolioUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-7.5 h-7.5 rounded-lg bg-slate-50 hover:bg-orange-500 hover:text-white border border-slate-200/60 text-slate-400 flex items-center justify-center transition-all duration-300"
+                            >
+                              <Globe className="w-3.5 h-3.5" />
+                            </a>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
 
       <motion.div

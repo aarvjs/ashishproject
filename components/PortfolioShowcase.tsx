@@ -55,9 +55,11 @@ const ctaBackgrounds = [
 
 interface PhoneCardProps {
   project: typeof phoneProjects[0];
+  isDragging: boolean;
+  isActive: boolean;
 }
 
-function PhoneCard({ project }: PhoneCardProps) {
+function PhoneCard({ project, isDragging, isActive }: PhoneCardProps) {
   const [iframeLoading, setIframeLoading] = useState(true);
 
   return (
@@ -94,20 +96,36 @@ function PhoneCard({ project }: PhoneCardProps) {
           {/* Screen Viewport */}
           <div className="relative w-full h-full pt-8 pb-3 bg-white overflow-hidden flex flex-col animate-fadeIn">
             <div className="relative w-full h-full overflow-hidden bg-white">
-              {iframeLoading && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-50 z-10 pointer-events-none">
-                  <Loader2 className="w-6 h-6 text-orange-500 animate-spin mb-2" />
-                  <span className="text-[9px] uppercase font-bold tracking-widest text-slate-400">Loading Demo...</span>
+              {isActive ? (
+                <>
+                  {iframeLoading && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-50 z-10 pointer-events-none">
+                      <Loader2 className="w-6 h-6 text-orange-500 animate-spin mb-2" />
+                      <span className="text-[9px] uppercase font-bold tracking-widest text-slate-400">Loading Demo...</span>
+                    </div>
+                  )}
+                  
+                  <iframe
+                    src={project.url}
+                    title={project.title}
+                    className="phone-iframe w-full h-full border-0 block bg-white"
+                    loading="lazy"
+                    onLoad={() => setIframeLoading(false)}
+                    style={{ pointerEvents: isDragging ? 'none' : 'auto' }}
+                  />
+                </>
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-slate-50 to-orange-50/20 flex flex-col items-center justify-center p-4 text-center select-none">
+                  <div className="w-10 h-10 rounded-2xl bg-orange-500/10 flex items-center justify-center text-orange-600 mb-2">
+                    <Sparkles className="w-5 h-5" />
+                  </div>
+                  <h5 className="text-[10px] sm:text-xs font-black text-slate-800 tracking-tight">{project.title}</h5>
+                  <p className="text-[8px] sm:text-[9px] text-slate-400 mt-0.5 font-medium max-w-[150px]">Interactive Mobile Demo</p>
+                  <span className="mt-2 text-[8px] font-black uppercase tracking-widest text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full">
+                    Activate Preview
+                  </span>
                 </div>
               )}
-              
-              <iframe
-                src={project.url}
-                title={project.title}
-                className="phone-iframe w-full h-full border-0 block bg-white"
-                loading="lazy"
-                onLoad={() => setIframeLoading(false)}
-              />
             </div>
           </div>
 
@@ -122,6 +140,11 @@ function PhoneCard({ project }: PhoneCardProps) {
 export function PortfolioShowcase() {
   const [bgIndex, setBgIndex] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [visibleIndex, setVisibleIndex] = useState(0);
+
+  // Throttling refs
+  const dragTicking = useRef(false);
+  const scrollTicking = useRef(false);
   
   // Drag states
   const [isMouseDown, setIsMouseDown] = useState(false);
@@ -172,6 +195,7 @@ export function PortfolioShowcase() {
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!sliderRef.current) return;
+    e.preventDefault(); // Prevents accidental text selection / image dragging
     setIsMouseDown(true);
     setStartX(e.pageX - sliderRef.current.offsetLeft);
     setScrollLeftState(sliderRef.current.scrollLeft);
@@ -193,34 +217,58 @@ export function PortfolioShowcase() {
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isMouseDown || !sliderRef.current) return;
     e.preventDefault();
-    const x = e.pageX - sliderRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5;
-    sliderRef.current.scrollLeft = scrollLeftState - walk;
-    if (Math.abs(walk) > 5) {
-      setIsDragging(true);
+    
+    const pageX = e.pageX;
+    const offsetLeft = sliderRef.current.offsetLeft;
+
+    if (!dragTicking.current) {
+      requestAnimationFrame(() => {
+        if (sliderRef.current && isMouseDown) {
+          const x = pageX - offsetLeft;
+          const walk = x - startX; // 1:1 natural drag mapping
+          sliderRef.current.scrollLeft = scrollLeftState - walk;
+          if (Math.abs(walk) > 5) {
+            setIsDragging(true);
+          }
+        }
+        dragTicking.current = false;
+      });
+      dragTicking.current = true;
     }
   };
 
   const handleScroll = () => {
-    if (sliderRef.current) {
-      const { scrollLeft, clientWidth } = sliderRef.current;
-      const cards = sliderRef.current.children;
-      let closestIndex = 0;
-      let closestDistance = Infinity;
-      const containerCenter = scrollLeft + clientWidth / 2;
+    if (!sliderRef.current) return;
 
-      for (let i = 0; i < cards.length; i++) {
-        const card = cards[i] as HTMLElement;
-        const cardCenter = card.offsetLeft + card.clientWidth / 2;
-        const distance = Math.abs(cardCenter - containerCenter);
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestIndex = i;
+    if (!scrollTicking.current) {
+      requestAnimationFrame(() => {
+        if (sliderRef.current) {
+          const { scrollLeft, clientWidth } = sliderRef.current;
+          const cards = sliderRef.current.children;
+          let closestIndex = 0;
+          let closestDistance = Infinity;
+          const containerCenter = scrollLeft + clientWidth / 2;
+
+          for (let i = 0; i < cards.length; i++) {
+            const card = cards[i] as HTMLElement;
+            const cardCenter = card.offsetLeft + card.clientWidth / 2;
+            const distance = Math.abs(cardCenter - containerCenter);
+            if (distance < closestDistance) {
+              closestDistance = distance;
+              closestIndex = i;
+            }
+          }
+          
+          if (closestIndex !== visibleIndex) {
+            setVisibleIndex(closestIndex);
+          }
+          if (closestIndex !== activeIndex) {
+            setActiveIndex(closestIndex);
+          }
         }
-      }
-      if (closestIndex !== activeIndex) {
-        setActiveIndex(closestIndex);
-      }
+        scrollTicking.current = false;
+      });
+      scrollTicking.current = true;
     }
   };
 
@@ -270,7 +318,7 @@ export function PortfolioShowcase() {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-500 italic">Excellence.</span>
             </h2>
           </div>
-          <p className="text-slate-500 font-medium max-w-sm text-sm md:text-base leading-relaxed">
+          <p className="text-slate-550 font-medium max-w-sm text-sm md:text-base leading-relaxed">
             A curated selection of our most impactful digital transformations. We build products that define market standards.
           </p>
         </div>
@@ -292,7 +340,7 @@ export function PortfolioShowcase() {
             <ChevronRight className="w-5 h-5" />
           </button>
 
-          {/* Slider Container */}
+          {/* Slider Container - Added hardware acceleration styles */}
           <div
             ref={sliderRef}
             onMouseDown={handleMouseDown}
@@ -309,21 +357,31 @@ export function PortfolioShowcase() {
               paddingLeft: paddingStyle.paddingLeft,
               paddingRight: paddingStyle.paddingRight,
               scrollPaddingLeft: paddingStyle.paddingLeft,
-              scrollPaddingRight: paddingStyle.paddingRight
+              scrollPaddingRight: paddingStyle.paddingRight,
+              willChange: 'transform',
+              transform: 'translate3d(0, 0, 0)'
             }}
           >
-            {phoneProjects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                className="flex-shrink-0 snap-center flex flex-col items-center"
-              >
-                <PhoneCard
-                  project={project}
-                />
+            {phoneProjects.map((project, index) => {
+              const isActive = Math.abs(index - visibleIndex) <= 1;
+              return (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  className="flex-shrink-0 snap-center flex flex-col items-center"
+                  style={{
+                    willChange: 'transform',
+                    transform: 'translate3d(0, 0, 0)'
+                  }}
+                >
+                  <PhoneCard
+                    project={project}
+                    isDragging={isDragging}
+                    isActive={isActive}
+                  />
                 
                 {/* Meta details below phone card */}
                 <div className="text-center mt-4 select-none">
@@ -340,7 +398,8 @@ export function PortfolioShowcase() {
                   </a>
                 </div>
               </motion.div>
-            ))}
+            );
+          })}
           </div>
 
           {/* Premium Clickable Pagination Dots */}
@@ -362,54 +421,7 @@ export function PortfolioShowcase() {
             ))}
           </div>
         </div>
-
-        {/* Improved Premium Ready to Build Masterpiece CTA Section with automatic background image slideshow */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-20 flex flex-col items-center rounded-[2.5rem] p-6 py-12 md:p-16 relative overflow-hidden text-center border border-white/5 shadow-2xl"
-        >
-          {/* Slideshow background layers */}
-          {ctaBackgrounds.map((bg, idx) => (
-            <div
-              key={bg}
-              className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out -z-20 ${
-                idx === bgIndex ? "opacity-55" : "opacity-0"
-              }`}
-              style={{ backgroundImage: `url(${bg})` }}
-            />
-          ))}
-
-          {/* Premium Gradient Overlay Wrapper */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-950/70 via-slate-900/60 to-orange-950/40 -z-10 pointer-events-none" />
-
-          {/* Dot patterns layer */}
-          <div 
-            className="absolute inset-0 opacity-[0.06] pointer-events-none" 
-            style={{
-              backgroundImage: "radial-gradient(#ff9500 1px, transparent 1px)",
-              backgroundSize: "20px 20px"
-            }} 
-          />
-          <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 blur-[120px] rounded-full -mr-48 -mt-48 pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-rose-500/10 blur-[120px] rounded-full -ml-48 -mb-48 pointer-events-none" />
-          
-          <h3 className="text-2xl sm:text-3xl md:text-4.5xl font-black text-white mb-5 relative z-10 leading-tight">
-            Ready to Build Your <br />
-            Next <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-50 to-orange-400 italic">Masterpiece?</span>
-          </h3>
-          <p className="text-slate-200 max-w-lg mx-auto mb-8 text-xs sm:text-sm md:text-base font-medium relative z-10 leading-relaxed px-4">
-            Let&apos;s turn your vision into high-performance, scale-ready digital solutions. Partner with India&apos;s leading technology professionals.
-          </p>
-          <div className="relative z-10">
-            <Link href="/contact">
-              <Button variant="primary" size="lg" className="rounded-2xl shadow-xl shadow-orange-500/20 px-10 py-4.5 text-base md:text-lg">
-                Get Started Now
-              </Button>
-            </Link>
-          </div>
-        </motion.div>
+        {/* CTA Section has been moved below BrowserPortfolioShowcase */}
       </div>
     </section>
   );

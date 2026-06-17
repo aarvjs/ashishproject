@@ -4,7 +4,7 @@ import React from "react";
 import { AuthProvider, useAuth } from "@/lib/auth";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { LayoutDashboard, FileText, PlusCircle, LogOut, ArrowLeft, Menu, X, Loader2 } from "lucide-react";
+import { LayoutDashboard, FileText, PlusCircle, LogOut, ArrowLeft, Menu, X, Loader2, Users, Briefcase } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -55,6 +55,8 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
     { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
     { label: "Blogs Management", href: "/admin/blogs", icon: FileText },
     { label: "Add New Blog", href: "/admin/blogs/add", icon: PlusCircle },
+    { label: "Projects", href: "/admin/projects", icon: Briefcase },
+    { label: "Developers", href: "/admin/developers", icon: Users },
   ];
 
   return (

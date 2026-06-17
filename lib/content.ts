@@ -258,75 +258,171 @@ export const processContent: Record<string, DetailedContent> = {
 export const expertiseContent: Record<string, DetailedContent> = {
   "web-development": {
     slug: "web-development",
-    title: "Web Development",
-    subtitle: "Next-Gen Web Applications",
-    icon: "🌐",
-    description: "Modern, responsive web applications built with React & Next.js.",
+    title: "Website Development",
+    subtitle: "High-Performance Business Websites",
+    icon: "Globe",
+    description: "Custom React and Next.js websites tailored for rapid business scaling.",
     longDescription: "We build web applications that are as fast as they are beautiful. Using the latest technologies like Next.js 15, we ensure your site is optimized for speed, SEO, and user experience. Whether it's a simple landing page or a complex SaaS platform, we deliver clean code and premium designs.",
-    features: ["Responsive Design", "SEO Optimization", "PWA Support", "CMS Integration"],
-    benefits: ["Faster Load Times", "Better Google Rankings", "Improved User Experience"],
+    features: [
+      "Custom Component Architecture",
+      "Full On-Page SEO Optimization",
+      "Responsive & Mobile-First Layout",
+      "CMS & Headless Integrations"
+    ],
+    benefits: [
+      "Instant Page Load Speeds",
+      "Superior Google Search Rankings",
+      "High Conversion Rates"
+    ],
     technologies: ["Next.js 15", "React", "TypeScript", "Tailwind CSS", "Node.js"],
     gradient: "from-blue-600 to-indigo-500"
   },
   "mobile-app": {
     slug: "mobile-app",
     title: "Mobile App Development",
-    subtitle: "iOS & Android Native Experience",
-    icon: "📱",
-    description: "Native and cross-platform mobile apps for iOS and Android.",
+    subtitle: "Cross-Platform Mobile Apps",
+    icon: "Smartphone",
+    description: "Cross-platform iOS and Android apps using React Native and Flutter.",
     longDescription: "Get your business into your customers' pockets. We build mobile apps using React Native or Flutter, providing a native look and feel on both iOS and Android with a single codebase. Focus on performance and smooth animations.",
-    features: ["App Store Submission", "Push Notifications", "Offline Support", "Biometric Auth"],
-    benefits: ["Wider Customer Reach", "Higher Brand Loyalty", "Direct Marketing Channel"],
+    features: [
+      "Cross-Platform Codebase",
+      "Native Device Features Access",
+      "Push Notifications System",
+      "App Store & Play Store Deployment"
+    ],
+    benefits: [
+      "Reach iOS and Android Customers",
+      "Consistent Performance",
+      "Offline Mode Functionality"
+    ],
     technologies: ["React Native", "Flutter", "Swift", "Kotlin", "Firebase"],
     gradient: "from-rose-500 to-orange-500"
   },
-  "cloud-solutions": {
-    slug: "cloud-solutions",
-    title: "Cloud Solutions",
-    subtitle: "Scalable Infrastructure",
-    icon: "☁️",
-    description: "Scalable infrastructure and cloud-native services.",
-    longDescription: "Migrate to the cloud for better reliability and lower costs. We design and manage cloud architectures on AWS, Azure, or Google Cloud. We focus on auto-scaling and cost-optimization to ensure you only pay for what you use.",
-    features: ["AWS/Azure Management", "Dockerization", "Serverless Setup", "Cloud Migration"],
-    benefits: ["No Hardware Costs", "99.99% Reliability", "Instant Scalability"],
-    technologies: ["AWS", "Azure", "Docker", "Kubernetes", "Linux"],
+  "android-app": {
+    slug: "android-app",
+    title: "Android App Development",
+    subtitle: "Custom Android Operations",
+    icon: "Android",
+    description: "Tailored Android applications optimized for Google Play store ecosystem.",
+    longDescription: "We craft robust native Android apps designed to offer fluid navigation, deep device integration, and seamless deployment on the Google Play Store. Leverage the latest Android APIs for your corporate goals.",
+    features: [
+      "Google Play Store Compliance",
+      "Material Design Guidelines",
+      "Background Tasks & Services",
+      "Local DB & Cache Management"
+    ],
+    benefits: [
+      "Optimized Android Integration",
+      "Deep Device Compatibility",
+      "High-Performance Native Code"
+    ],
+    technologies: ["Kotlin", "Java", "Android SDK", "Firebase", "SQLite"],
     gradient: "from-emerald-500 to-teal-400"
   },
-  "hosting": {
-    slug: "hosting",
-    title: "Premium Hosting",
-    subtitle: "Enterprise-Grade Speed",
-    icon: "💎",
-    description: "1 year of high-performance hosting at zero cost.",
-    longDescription: "We provide enterprise-grade hosting for all our clients. With global CDNs and edge computing, your website will load in milliseconds regardless of where your users are. Secure SSL and automated backups included.",
-    features: ["Free SSL", "Daily Backups", "Managed Servers", "24/7 Uptime"],
-    benefits: ["Blazing Fast Speed", "Always Online", "Zero Hosting Effort"],
-    technologies: ["Vercel", "DigitalOcean", "Cloudflare", "Nginx", "Redis"],
+  "custom-software": {
+    slug: "custom-software",
+    title: "Custom Software Development",
+    subtitle: "Enterprise-Grade Softwares",
+    icon: "Cpu",
+    description: "Tailor-made software products to automate operations and drive growth.",
+    longDescription: "Automate and optimize your internal workflows with robust custom software built specifically for your business processes. We map database structures and design systems to match your operations.",
+    features: [
+      "Tailored Software Architecture",
+      "Automated Operations Workflows",
+      "Robust Third-Party Integrations",
+      "Enterprise-Level Data Security"
+    ],
+    benefits: [
+      "Streamlined Business Systems",
+      "Reduced System Overhead",
+      "Scales with Your Organization"
+    ],
+    technologies: ["Node.js", "Python", "PostgreSQL", "Docker", "AWS"],
     gradient: "from-violet-600 to-purple-500"
   },
-  "maintenance": {
-    slug: "maintenance",
-    title: "Active Maintenance",
-    subtitle: "Worry-Free Operations",
-    icon: "⚙️",
-    description: "1 year of complimentary maintenance and support.",
-    longDescription: "We don't just build and leave. We provide active maintenance to fix bugs, update dependencies, and keep your site secure. Our monthly health checks ensure your business stays online and running smoothly.",
-    features: ["Security Updates", "Bug Fixes", "Uptime Monitoring", "Minor Tweaks"],
-    benefits: ["Always Up-to-Date", "Professional Support", "Zero Downtime"],
-    technologies: ["New Relic", "Sentry", "Cloudwatch", "GitHub Actions", "Dependabot"],
+  "billing-system": {
+    slug: "billing-system",
+    title: "Billing & Management System",
+    subtitle: "Automated Financial Workflows",
+    icon: "Calculator",
+    description: "Secure and automated invoice generation, payment tracking, and analytics dashboards.",
+    longDescription: "Say goodbye to manual tracking. We deploy automated billing platforms that process digital payments, auto-generate invoices, and present visual dashboards showing key financial insights.",
+    features: [
+      "Automated Invoice Generation",
+      "Secure Payment Integrations",
+      "Real-Time Revenue Metrics",
+      "Multi-Currency Payments"
+    ],
+    benefits: [
+      "Faster Payment Collection",
+      "Error-Free Invoicing",
+      "Clear Revenue Visibility"
+    ],
+    technologies: ["Stripe", "Razorpay", "React", "Node.js", "MongoDB"],
     gradient: "from-amber-500 to-orange-400"
   },
-  "delivery": {
-    slug: "delivery",
-    title: "Ultra-Fast Delivery",
-    subtitle: "Launch in Records Time",
-    icon: "⚡",
-    description: "Experience rapid development cycles and on-time delivery.",
-    longDescription: "Time to market is critical. Our agile development process allows us to ship high-quality features in record time. Most of our MVPs are ready for launch in just 4-6 weeks without compromising on quality or design.",
-    features: ["Agile Sprints", "Daily Updates", "Rapid Prototyping", "MVP Focus"],
-    benefits: ["Outpace Competitors", "Faster ROI", "Quick Feedback Loops"],
-    technologies: ["Jira", "Figma", "Slack", "Notion", "Linear"],
+  "erp-crm": {
+    slug: "erp-crm",
+    title: "ERP & CRM Solutions",
+    subtitle: "Integrated Enterprise Systems",
+    icon: "Briefcase",
+    description: "Centralized customer relationship and resource planning platforms for modern business.",
+    longDescription: "Integrate customer relationship management with resource planning into a single source of truth. Manage employee permissions, project resource allocation, and automated lead generation seamlessly.",
+    features: [
+      "Lead Tracking & Pipelines",
+      "Centralized Customer Data",
+      "Inventory & Resource Allocation",
+      "Automated WhatsApp / Email Alerts"
+    ],
+    benefits: [
+      "Increased Sales Conversions",
+      "Data-Driven Decisions",
+      "Better Staff Collaboration"
+    ],
+    technologies: ["Next.js", "Prisma", "PostgreSQL", "Tailwind CSS", "REST APIs"],
+    gradient: "from-orange-600 to-rose-600"
+  },
+  "digital-marketing": {
+    slug: "digital-marketing",
+    title: "Digital Marketing Services",
+    subtitle: "ROI-Focused Marketing Campaigns",
+    icon: "Megaphone",
+    description: "Data-driven performance marketing campaigns to maximize lead generation.",
+    longDescription: "Generate qualified leads and double conversions using automated ad setups and target mapping. We design ad landing pages and write ad copies that convert cold clicks into paying clients.",
+    features: [
+      "Paid Search Ads (PPC)",
+      "Social Media Campaigns",
+      "Conversion Optimization (CRO)",
+      "Weekly ROI & Analytics Reports"
+    ],
+    benefits: [
+      "Predictable Lead Stream",
+      "Enhanced Brand Presence",
+      "Higher Return on Ad Spend"
+    ],
+    technologies: ["Google Ads", "Meta Ads", "Google Analytics", "Hotjar"],
     gradient: "from-sky-500 to-blue-400"
+  },
+  "seo-services": {
+    slug: "seo-services",
+    title: "SEO Services",
+    subtitle: "Dominating Search Rankings",
+    icon: "Search",
+    description: "Organic search engine optimization to place your business on Google's first page.",
+    longDescription: "Boost your organic visibility and secure steady customer traffic. We optimize site speeds, create high-quality content structure schemas, and run link-building audits to raise your search domain authority.",
+    features: [
+      "In-Depth Keyword Research",
+      "Technical SEO Diagnostics",
+      "Content & Link Authority Building",
+      "Competitor Visibility Audits"
+    ],
+    benefits: [
+      "Free Organic Web Traffic",
+      "Long-Term Lead Generation",
+      "Established Search Authority"
+    ],
+    technologies: ["Ahrefs", "SEMrush", "Google Search Console", "Screaming Frog"],
+    gradient: "from-teal-500 to-emerald-500"
   }
 };
 

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect } from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 
@@ -19,40 +18,31 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Rocket, Users, ChevronDown } from "lucide-react";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-
-const Ballpit = dynamic(() => import("./Ballpit"), { ssr: false });
 
 export function Hero() {
   return (
-    <section id="home" className="relative overflow-hidden pt-2 pb-12 md:pb-24 lg:pb-32">
-      {/* Background Gradients */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(255,149,0,0.12),transparent_45%),radial-gradient(circle_at_80%_20%,rgba(255,210,0,0.08),transparent_35%)]" />
-      <div className="container mx-auto max-w-7xl px-4">
-        <div className="relative flex min-h-[auto] md:min-h-[calc(100vh-140px)] max-h-[900px] flex-col items-center justify-between overflow-hidden rounded-[2rem] md:rounded-[2.5rem] border border-white/70 bg-white/45 px-4 py-10 md:py-16 md:px-16 shadow-[0_20px_50px_rgba(39,83,166,0.1)] backdrop-blur-xl">
+    <section id="home" className="-mt-24 relative overflow-hidden min-h-screen flex items-center pt-44 pb-12 md:pb-24 lg:pb-32 z-0">
+      {/* Fullscreen Background Video */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+      >
+        <source src="/images/herobagourdveido.mp4" type="video/mp4" />
+        <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260518_003132_8b7edcb6-c64d-4a52-a9ca-879942e122ad.mp4" type="video/mp4" />
+      </video>
 
-          <Image
-            src="/hero-scene.svg"
-            alt="Sabka Saathi Hero Banner"
-            fill
-            className="pointer-events-none rounded-[2rem] object-cover opacity-20 hidden sm:block"
-            priority
-          />
-          <div className="pointer-events-none absolute inset-0 rounded-[2rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.25)_0%,rgba(255,255,255,0.05)_40%,rgba(255,255,255,0.15)_100%)]" />
+      {/* Light White/Cream/Orange Overlay - Clear & High Contrast */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/35 via-orange-50/20 to-white/40 z-10 pointer-events-none" />
 
-          {/* Ballpit Bubble Background Effect */}
-          <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden rounded-[2rem] md:rounded-[2.5rem]">
-            <Ballpit
-              count={120}
-              gravity={0.6}
-              friction={0.8}
-              wallBounce={0.95}
-              followCursor={true}
-              colors={[0xff7a00, 0xffb347, 0xffffff, 0xffe0b2]}
-            />
-            {/* Subtle overlay/fade to keep text highly readable */}
-            <div className="absolute inset-0 bg-white/[0.12] backdrop-blur-[1px]" />
-          </div>
+      {/* Background Gradients from website theme */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(255,149,0,0.06),transparent_45%),radial-gradient(circle_at_80%_20%,rgba(255,210,0,0.04),transparent_35%)] z-15" />
+
+      <div className="container mx-auto max-w-7xl px-4 relative z-20 w-full">
+        <div className="relative flex min-h-[auto] md:min-h-[calc(100vh-180px)] max-h-[900px] flex-col items-center justify-between overflow-hidden px-4 py-10 md:py-16 md:px-16 w-full">
 
           {/* Central Content Stack with Staggered Entrance Animations */}
           <div className="relative z-30 flex flex-col items-center text-center gap-5 mt-8 md:mt-16">
@@ -68,7 +58,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
-              className="max-w-4xl text-3xl sm:text-4xl md:text-6xl lg:text-7.5xl font-black leading-tight text-slate-950 tracking-tight"
+              className="max-w-4xl text-3xl sm:text-4xl md:text-6xl lg:text-7.5xl font-black leading-tight text-slate-955 tracking-tight"
             >
               Building Digital Excellence with <span className="text-orange-600">Sabka Saathi</span>
             </motion.h1>
@@ -170,11 +160,6 @@ export function Hero() {
               <div className="absolute -bottom-10 -right-10 h-32 w-32 rounded-full bg-orange-400/5 blur-3xl" />
             </motion.div>
           </motion.div>
-
-          {/* Ambient background blur inside card */}
-          <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-            <div className="w-96 h-96 bg-orange-400/5 blur-[120px] rounded-full" />
-          </div>
 
           <div className="absolute right-5 bottom-10 hidden h-32 w-32 items-center justify-center md:flex z-40">
             <svg className="absolute h-full w-full animate-[spin_15s_linear_infinite]" viewBox="0 0 100 100">

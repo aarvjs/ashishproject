@@ -43,6 +43,7 @@ import { FounderSection } from "@/components/FounderSection";
 import { FAQSection } from "@/components/FAQSection";
 import { Footer } from "@/components/Footer";
 import { PortfolioShowcase } from "@/components/PortfolioShowcase";
+import { BrowserPortfolioShowcase } from "@/components/BrowserPortfolioShowcase";
 import { BiharServicesSEO } from "@/components/BiharServicesSEO";
 import Link from "next/link";
 import { Code2, Server, Smartphone, Cloud } from "lucide-react";
@@ -59,6 +60,8 @@ export default function Home() {
         <StatsShowcase />
 
         <PortfolioShowcase />
+
+        <BrowserPortfolioShowcase />
 
         <div className="py-12 bg-white/30 border-y border-slate-100">
           <div className="container mx-auto px-4">
